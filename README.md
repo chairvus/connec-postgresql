@@ -85,9 +85,11 @@ You'll be prompted for the password (`secretpassword`).
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/connecting-to-postgre.git
-cd connecting-to-postgre
+git clone git@github.com:chairvus/connec-postgresql.git
+cd connec-postgresql
 ```
+
+> This uses SSH to clone. Make sure you've added an SSH key to your GitHub account first — see [Pushing via SSH](#pushing-via-ssh) below if you haven't set this up yet.
 
 ### 2. Create and activate a virtual environment
 
@@ -129,6 +131,49 @@ Isi tabel employees:
 4. **Inserts a row** using a parameterized query (`:name`, `:position`, `:salary`) — this is the safe way to insert data and avoids SQL injection.
 5. **Commits the transaction** — SQLAlchemy 2.x requires an explicit `commit()` for write operations (`INSERT`, `CREATE TABLE`, etc.) when not using `engine.begin()`.
 6. **Queries the table** and prints all rows to confirm the insert worked.
+
+## Pushing via SSH
+
+This repository is set up to use SSH for authentication with GitHub instead of HTTPS. If you're setting this up on a new machine:
+
+1. **Check for an existing SSH key**
+
+   ```bash
+   ls -al ~/.ssh
+   ```
+
+2. **Generate a new key if you don't have one**
+
+   ```bash
+   ssh-keygen -t ed25519 -C "your-email@example.com"
+   ```
+
+3. **Add it to the ssh-agent**
+
+   ```bash
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_ed25519
+   ```
+
+4. **Copy the public key and add it to GitHub**
+
+   ```bash
+   cat ~/.ssh/id_ed25519.pub | pbcopy
+   ```
+
+   Then paste it at [github.com/settings/keys](https://github.com/settings/keys) → **New SSH key**.
+
+5. **Test the connection**
+
+   ```bash
+   ssh -T git@github.com
+   ```
+
+6. **Set the remote to use SSH** (if it was previously set to HTTPS)
+
+   ```bash
+   git remote set-url origin git@github.com:chairvus/connec-postgresql.git
+   ```
 
 ## Troubleshooting
 
